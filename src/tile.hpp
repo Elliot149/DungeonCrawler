@@ -8,12 +8,14 @@ using namespace std;
 
 class Tile {
     public:
-        Tile(const string& texture_name);
         string name;
         bool hitbox;
         static constexpr int WIDTH  = 16;
         static constexpr int HEIGHT = 16;
-        uint8_t pixels[HEIGHT][WIDTH];
+        static uint8_t pixels[HEIGHT][WIDTH];
+
+        Tile(const string& texture_name);
+        static uint8_t get_pixel(pair<int,int> tileCoord);
     
     private:
         Tile();

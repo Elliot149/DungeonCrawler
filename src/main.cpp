@@ -24,8 +24,8 @@ int main() {
     //     for (int k = 0; k < 14; k++) { for (int i = 0; i < 9; i++) { printw("|                              |"); } printw("\n"); }
     //     for (int i = 0; i < 9; i++) { printw("+------------------------------+"); } printw("\n");
     // }
-    Map* map = new Map();
-    vector<vector<string>> id_map = map->id_map;
+    Map map = Map();
+    vector<vector<string>> id_map = map.id_map;
 
     for (vector<string> line : id_map) {
         for (string s : line) {

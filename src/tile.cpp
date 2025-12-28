@@ -50,3 +50,9 @@ Tile Tile::load_texture(const string& texture_name) {
 
     return tile;
 }
+
+
+// This function returns the pixel value at a given coord
+uint8_t Tile::get_pixel(pair<int,int> tileCoord) {
+    return pixels[tileCoord.second][tileCoord.first];
+}

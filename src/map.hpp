@@ -5,12 +5,14 @@
 #include <cmath>
 
 using namespace std;
-using tileID = int;
 
-#define GRASS "G"
-#define GRAVEL "g"
-#define DIRT "d"
-#define STONE "S"
+#define GRASS "grass"
+#define GRAVEL "gravel"
+#define DIRT "dirt"
+#define STONE_BRICK "stone_brick"
+#define WATER "water"
+#define STONE_WALL "stone_wall"
+#define FLOOR "."
 
 class Map {
     public:
@@ -22,9 +24,18 @@ class Map {
         int width, height;
 
     private:
+        static const vector<string> ground_tiles;
+        static const vector<pair<string,int>> tiles_with_random_textures;
+        static const vector<string> fully_directional_tiles;
+        static const vector<string> horizontally_directional_tiles;
+        static const vector<string> wall_tiles;
 
-        static pair<vector<vector<string>>, vector<vector<string>>> generate_map();
+        static vector<vector<Tile>> generate_map();
         static vector<vector<string>> replace_ground_tiles(vector<vector<string>> map_rep);
         static vector<pair<int,int>> get_dot_coords(vector<vector<string>> map_rep);
         static vector<string> get_neighbours(vector<vector<string>> map_rep, pair<int,int> coordinate);
+        static vector<vector<string>> handle_directional_tiles(vector<vector<string>> map_rep);
+        static vector<vector<string>> handle_random_textures(vector<vector<string>> map_rep);
+        static vector<vector<string>> handle_walls(vector<vector<string>> map_rep);
+        static vector<vector<Tile>> build_tile_map(vector<vector<string>> map_rep);
 };
