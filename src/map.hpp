@@ -1,8 +1,11 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <cstdint>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
+#include "tile.hpp"
 
 using namespace std;
 
@@ -17,10 +20,10 @@ using namespace std;
 class Map {
     public:
 
-        Map();                                     // Constructor function
-        ~Map();                                    // Destructor function
-        static vector<vector<string>> pixel_map;   // Stores the ascii codes of each pixel on the map
-        static vector<vector<string>> id_map;      // Stores what each pixel on the map actually is
+        Map();                                      // Constructor function
+        ~Map();                                     // Destructor function
+        static vector<vector<uint8_t>> pixel_map;   // Stores the ascii codes of each pixel on the map
+        static vector<vector<string>>  id_map;      // Stores what each pixel on the map actually is
         int width, height;
 
     private:
@@ -31,11 +34,11 @@ class Map {
         static const vector<string> wall_tiles;
 
         static vector<vector<Tile>> generate_map();
-        static vector<vector<string>> replace_ground_tiles(vector<vector<string>> map_rep);
         static vector<pair<int,int>> get_dot_coords(vector<vector<string>> map_rep);
         static vector<string> get_neighbours(vector<vector<string>> map_rep, pair<int,int> coordinate);
-        static vector<vector<string>> handle_directional_tiles(vector<vector<string>> map_rep);
-        static vector<vector<string>> handle_random_textures(vector<vector<string>> map_rep);
-        static vector<vector<string>> handle_walls(vector<vector<string>> map_rep);
+        static void replace_ground_tiles(vector<vector<string>>& map_rep);
+        static void handle_directional_tiles(vector<vector<string>>& map_rep);
+        static void handle_random_textures(vector<vector<string>>& map_rep);
+        static void handle_walls(vector<vector<string>>& map_rep);
         static vector<vector<Tile>> build_tile_map(vector<vector<string>> map_rep);
 };

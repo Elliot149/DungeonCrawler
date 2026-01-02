@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <cstdint>
 #include <vector>
 #include <unordered_map>
 
@@ -12,10 +13,10 @@ class Tile {
         bool hitbox;
         static constexpr int WIDTH  = 16;
         static constexpr int HEIGHT = 16;
-        static uint8_t pixels[HEIGHT][WIDTH];
+        uint8_t pixels[HEIGHT][WIDTH];
 
         Tile(const string& texture_name);
-        static uint8_t get_pixel(pair<int,int> tileCoord);
+        // uint8_t get_pixel(pair<int,int> tileCoord) const;
     
     private:
         Tile();
