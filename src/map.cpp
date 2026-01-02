@@ -33,7 +33,6 @@ Map::Map() {
             }
         }
     }
-    cout << "Generated Map" << endl;
 }
 
 
@@ -74,11 +73,9 @@ vector<vector<Tile>> Map::build_tile_map(vector<vector<string>> map_rep) {
         tile_map.push_back({});
         for (int x = 0; x < (int)map_rep.front().size(); x++) {
             string current_tile = map_rep.at(y).at(x);
-            // cout << current_tile << " (" << x << "," << y << ")" << endl;
             tile_map.back().push_back(Tile(current_tile));
         }
     }
-    cout << "Built tile map" << endl;
     return tile_map;
 }
 
@@ -94,7 +91,6 @@ void Map::handle_walls(vector<vector<string>>& map_rep) {
                 if (wall_tile+"_tile_left" == t || wall_tile+"_tile_right" == t || 
                     wall_tile+"_tile_center" == t || wall_tile+"_tile_alone" == t) {
                     vector<string> n = get_neighbours(map_rep, {x,y});
-                    // cout << n[3] << " " << t << endl;
                     if (n[3].find(wall_tile) == string::npos) { return_map.back().push_back({t + "_1"}); }
                     else if (y < (int)map_rep.size()-1) {
                         vector<string> lower_n = get_neighbours(map_rep, {x,y+1});

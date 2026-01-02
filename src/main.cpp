@@ -4,6 +4,7 @@
 #include <iostream>
 #include "map.hpp"
 #include "display.hpp"
+#include "player.hpp"
 
 int main() {
 
@@ -22,7 +23,7 @@ int main() {
     start_color();
     constexpr int MAX_COLORS = 256;
     for (int c = 0; c < MAX_COLORS; ++c) {
-        init_pair(c, COLOR_BLACK, c);
+        init_pair(c+1, COLOR_BLACK, c);
     }
 
     srand(time(0));         // Consider changing this to use generated seeds
@@ -37,17 +38,19 @@ int main() {
 
     Map map = Map();
     vector<vector<string>>  id_map    = map.id_map;
-    vector<vector<uint8_t>> pixel_map = map.pixel_map;
-
     Display display = Display();
-    Camera camera { 200, 100, 0, 0 };
+    Player  player  = Player({17,17});
+    Camera  camera    { 200, 100, 0, 0 };
 
     // for (auto& row : id_map) {
     //     for (string s : row) { cout << s << " "; }
     //     cout << endl;
     // }
 
-    display.draw_map(pixel_map, camera);
+    display.map_layer = map.pixel_map;
+    display.initialise_sprite_layer();
+    display.add_sprite_to_layer(player.get_coordinates(), player.get_current_sprite());
+    display.draw_map(camera);
 
     refresh();
 
