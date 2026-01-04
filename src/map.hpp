@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <string>
 #include <cstdlib>
@@ -24,7 +26,7 @@ class Map {
         ~Map();                                     // Destructor function
         static vector<vector<uint8_t>> pixel_map;   // Stores the ascii codes of each pixel on the map
         static vector<vector<string>>  id_map;      // Stores what each pixel on the map actually is
-        int width, height;
+        static int width, height;
 
     private:
         static const vector<string> ground_tiles;

@@ -1,9 +1,12 @@
+#pragma once
+
 #include <vector>
 #include <string>
 #include <curses.h>
 #include <cstdint>
 #include <iostream>
 #include "tile.hpp"
+#include "entity.hpp"
 
 using namespace std;
 
@@ -19,13 +22,8 @@ struct Camera {
 class Display {
 
     public:
-        void draw_map(Camera& camera);
-        void initialise_sprite_layer();   // This must be called after the map_layer has been set
-        void add_sprite_to_layer(pair<int,int> pos, vector<vector<uint8_t>> &sprite);
-
-        vector<vector<uint8_t>> sprite_layer;
-        vector<vector<uint8_t>> map_layer;
+        static void render(Camera& camera, const vector<vector<uint8_t>>& map_layer, const vector<Entity*>& entities);
 
     private:
-
+        static vector<vector<uint8_t>> generate_entity_layer(const vector<Entity*>& entities, const int width, const int height);
 };

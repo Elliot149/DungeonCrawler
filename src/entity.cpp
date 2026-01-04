@@ -1,16 +1,40 @@
-#include "player.hpp"
+#include "entity.hpp"
+#include "display.hpp"
+#include "map.hpp"
+
+
+// ==========-----========== ENTITY FUNCTIONS ==========-----========== //
+
+Entity::Entity() {
+
+}
+
+Entity::~Entity() {}
+
+
+// This function handles player movement
+void Entity::move(pair<int,int> direction) {
+    x += direction.first;
+    y += direction.second; 
+}
+
+
+// ==========-----========== PLAYER FUNCTIONS ==========-----========== //
 
 // This is the constructor function for the player class
 Player::Player(const pair<int,int> &spawn_pos) {
     read_sprite_file("idle_sprite_forward", idle_down_sprite);
     x = spawn_pos.first;
     y = spawn_pos.second;
+    width = 16;
+    height = 16;
     current_state = State::IDLE_DOWN;
 }
 
 
 // This is the destructor function for the player class
 Player::~Player() {}
+
 
 
 // This function is used by the constructor function to read all of the sprites
@@ -33,10 +57,6 @@ void Player::read_sprite_file(string sprite_name, vector<vector<uint8_t>> &data_
         }
     }
 }
-
-
-// This function returns the current coordinates of the player
-pair<int,int> Player::get_coordinates() { return {x, y}; }
 
 
 // This function returns the current sprite of the player based on the state

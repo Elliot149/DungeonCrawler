@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 INCLUDES = -Ilib/pdcurses
 LIBS = -Llib/pdcurses/wincon -lpdcurses
 TARGET = build/game.exe
-SRC = src/main.cpp src/map.cpp src/display.cpp src/tile.cpp src/player.cpp
+SRC = src/main.cpp src/map.cpp src/display.cpp src/tile.cpp src/entity.cpp src/game.cpp
 
 all: $(TARGET)
 
