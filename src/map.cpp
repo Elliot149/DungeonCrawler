@@ -9,16 +9,15 @@ const vector<string> Map::horizontally_directional_tiles = {STONE_WALL};
 const vector<pair<string,int>> Map::tiles_with_random_textures = {{GRAVEL,3}, {WATER, 1}};
 
 vector<vector<uint8_t>> Map::pixel_map{};
-vector<vector<string>>  Map::id_map{};
+vector<vector<Tile>>    Map::id_map{};
 
 // Constructor function for the map class
 Map::Map() {
     // This will change after I implement random generation
     vector<vector<Tile>> map = generate_map();
+    id_map = map;
     pixel_map.resize(map.size() * Tile::HEIGHT);
-    id_map.resize(map.size() * Tile::HEIGHT);
     for (auto& row : pixel_map) { row.resize(map.front().size() * Tile::WIDTH); }
-    for (auto& row : id_map)    { row.resize(map.front().size() * Tile::WIDTH); }
 
     for (int map_y = 0; map_y < (int)map.size(); map_y++) {
         for (int map_x = 0; map_x < (int)map[map_y].size(); map_x++) {
@@ -28,7 +27,6 @@ Map::Map() {
             for (int tile_y = 0; tile_y < Tile::HEIGHT; tile_y++) {
                 for (int tile_x = 0; tile_x < Tile::WIDTH; tile_x++) {
                     pixel_map[base_y + tile_y][base_x + tile_x] = t.pixels[tile_y][tile_x];
-                    id_map[base_y + tile_y][base_x + tile_x] = t.name;
                 }
             }
         }
@@ -230,4 +228,14 @@ vector<string> Map::get_neighbours(vector<vector<string>> map_rep, pair<int,int>
     if ( coordinate.first < (int)map_rep.front().size()-1 ) { neighbours[2] = map_rep.at(coordinate.second).at(coordinate.first+1); }
     if ( coordinate.second < (int)map_rep.size()-1 ) { neighbours[3] = map_rep.at(coordinate.second+1).at(coordinate.first); }
     return neighbours;
+}
+
+
+// This function checks if there is a collision between the player and a map entity with a hitbox
+bool Map::check_for_collision(int x, int y, int width, int height) {
+    if (id_map[floor(y/Tile::HEIGHT)][floor(x/Tile::WIDTH)].hitbox) { return true; }
+    if (id_map[floor((y+height-1)/Tile::HEIGHT)][floor(x/Tile::WIDTH)].hitbox) { return true; }
+    if (id_map[floor(y/Tile::HEIGHT)][floor((x+width-1)/Tile::WIDTH)].hitbox) { return true; }
+    if (id_map[floor((y+height-1)/Tile::HEIGHT)][floor((x+width-1)/Tile::WIDTH)].hitbox) { return true; }
+    return false;
 }

@@ -24,8 +24,9 @@ class Map {
 
         Map();                                      // Constructor function
         ~Map();                                     // Destructor function
+        static bool check_for_collision(int x, int y, int width, int height);
         static vector<vector<uint8_t>> pixel_map;   // Stores the ascii codes of each pixel on the map
-        static vector<vector<string>>  id_map;      // Stores what each pixel on the map actually is
+        static vector<vector<Tile>>    id_map;      // Stores what each pixel on the map actually is
         static int width, height;
 
     private:

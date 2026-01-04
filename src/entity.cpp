@@ -13,7 +13,7 @@ Entity::~Entity() {}
 
 
 // This function handles player movement
-void Entity::move(pair<int,int> direction) {
+void Entity::move(pair<float,float> direction) {
     x += direction.first;
     y += direction.second; 
 }
@@ -29,6 +29,7 @@ Player::Player(const pair<int,int> &spawn_pos) {
     width = 16;
     height = 16;
     current_state = State::IDLE_DOWN;
+    movement_speed = 3.0;
 }
 
 

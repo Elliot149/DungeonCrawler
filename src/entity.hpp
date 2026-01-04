@@ -12,10 +12,11 @@ class Entity {
     public:
         Entity();
         ~Entity();
-        void move(pair<int,int> direction);
+        void move(pair<float,float> direction);
         virtual vector<vector<uint8_t>> &get_current_sprite() = 0;
         int x, y, width, height;
         bool hitbox;
+        float movement_speed;
 };
 
 

@@ -1,10 +1,29 @@
 #include "display.hpp"
 
-vector<vector<uint8_t>> Display::previous_render = {{}};
+// Constructor function
+Display::Display(int width, int height, int x, int y) {
+    int max_y, max_x;
+    getmaxyx(stdscr, max_y, max_x);
+    width  = std::min(width,  max_x);
+    height = std::min(height, max_y);
+    
+    DISPLAY_WIDTH = width;
+    DISPLAY_HEIGHT = height;
+
+    gamewin = newwin(height, width, y, x);
+    keypad(gamewin, TRUE);
+    nodelay(gamewin, TRUE);
+    werase(gamewin);
+}
+
+// Destructor function
+Display::~Display() {
+    if (gamewin) { delwin(gamewin); }
+}
+
 
 // This is the main function and draws the map to the screen
 void Display::render(Camera& camera, const vector<vector<uint8_t>>& map_layer, const vector<Entity*>& entities) {
-    cout << "START - " << chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count() << endl;
     if ((int)previous_render.size() != camera.HEIGHT || (int)previous_render.front().size() != camera.WIDTH) {
         previous_render.assign( camera.HEIGHT, vector<uint8_t>(camera.WIDTH, EMPTY_PIXEL) );
     }
@@ -24,15 +43,14 @@ void Display::render(Camera& camera, const vector<vector<uint8_t>>& map_layer, c
             
             current_render[screen_y][screen_x] = colour;
             if (previous_render[screen_y][screen_x] != colour) {
-                if (colour != current_colour) { attrset(COLOR_PAIR(colour+1)); current_colour = colour; }
-                mvaddch(screen_y, screen_x, ' ');
+                if (colour != current_colour) { wattrset(gamewin, COLOR_PAIR(colour+1)); current_colour = colour; }
+                mvwaddch(gamewin, screen_y, screen_x, ' ');
             }
         }
     }
-    wnoutrefresh(stdscr);
+    wnoutrefresh(gamewin);
     doupdate();
     previous_render.swap(current_render);
-    cout << "END -   " << chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count() << endl;
 }
 
 
@@ -53,3 +71,8 @@ vector<vector<uint8_t>> Display::generate_entity_layer(const vector<Entity*>& en
     }
     return entity_map;
 }
+
+
+// Getter methods for display width and height
+int Display::get_width()  { return DISPLAY_WIDTH;  }
+int Display::get_height() { return DISPLAY_HEIGHT; }

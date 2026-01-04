@@ -3,6 +3,7 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+#include <Xinput.h>
 #include "map.hpp"
 #include "display.hpp"
 #include "entity.hpp"
@@ -16,18 +17,17 @@ class Game {
         void run();
 
     private:
+        const pair<int,int> PLAYER_SPAWN = {49,49};
+
         Map map;
         Display display;
-        Camera camera;
         unique_ptr<Player> player;
+        Camera camera;
         vector<Entity*> entity_list;
 
         atomic<bool> running;
         atomic<int> player_dx;
         atomic<int> player_dy;
-        thread player_thread;
-
-        void init_curses();
 
         struct InputState {
             atomic<bool> up{false};
@@ -36,4 +36,6 @@ class Game {
             atomic<bool> right{false};
         };
         InputState input;
+
+        void handle_movement();
 };
