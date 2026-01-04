@@ -19,33 +19,46 @@ Game::Game() {
     
     srand(static_cast<unsigned>(time(nullptr)));
     init_curses();
-    start_threads();
 }
 
 
 Game::~Game() { 
     running = false;
-    if (player_thread.joinable()) {
-        player_thread.join();
-    }
     endwin();
 }
 
 
 void Game::run() {
+    constexpr auto FRAME_TIME = chrono::milliseconds(100);
     while (running) {
-        input.up = input.down = input.left = input.right = false;
-        int ch = getch();
-        switch (ch) {
-            case 'q': running     = false; break;
-            case 'w': input.up    = true;  break;
-            case 'a': input.left  = true;  break;
-            case 's': input.down  = true;  break;
-            case 'd': input.right = true;  break;
-            default: break;
+        auto frame_start = std::chrono::steady_clock::now();
+
+        int ch;
+        while ((ch = getch()) != ERR) {
+            switch (ch) {
+                case 'q': running     = false; break;
+                case 'w': input.up    = true;  break;
+                case 'a': input.left  = true;  break;
+                case 's': input.down  = true;  break;
+                case 'd': input.right = true;  break;
+            }
         }
+        int dx = 0, dy = 0;
+        if (input.up)    { dy -= 1; }
+        if (input.down)  { dy += 1; }
+        if (input.left)  { dx -= 1; }
+        if (input.right) { dx += 1; }
+
+        if ( dx || dy ) { 
+            player->move({dx, dy}); 
+            camera.start_x += dx;
+            camera.start_y += dy;
+        }
+        input.up = input.down = input.left = input.right = false;
         display.render(camera, map.pixel_map, entity_list);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        auto elapsed = std::chrono::steady_clock::now() - frame_start;
+        if (elapsed < FRAME_TIME) { this_thread::sleep_for(FRAME_TIME - elapsed); }
     }
 }
 
@@ -67,28 +80,5 @@ void Game::init_curses() {
     constexpr int MAX_COLORS = 256;
     for (int c = 0; c < MAX_COLORS; ++c) {
         init_pair(c + 1, COLOR_BLACK, c);
-    }
-}
-
-
-void Game::start_threads() {
-    player_thread = thread(&Game::player_thread_func, this);
-}
-
-
-void Game::player_thread_func() {
-    while (running) {
-        int dx = 0, dy = 0;
-        if (input.up)    { dy -= 1; }
-        if (input.down)  { dy += 1; }
-        if (input.left)  { dx -= 1; }
-        if (input.right) { dx += 1; }
-
-        if ( dx || dy ) { 
-            player->move({dx, dy}); 
-            camera.start_x += dx;
-            camera.start_y += dy;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }

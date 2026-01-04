@@ -28,8 +28,6 @@ class Game {
         thread player_thread;
 
         void init_curses();
-        void start_threads();
-        void player_thread_func();
 
         struct InputState {
             atomic<bool> up{false};

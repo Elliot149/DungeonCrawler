@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <chrono>
 #include <string>
 #include <curses.h>
 #include <cstdint>
@@ -26,4 +27,5 @@ class Display {
 
     private:
         static vector<vector<uint8_t>> generate_entity_layer(const vector<Entity*>& entities, const int width, const int height);
+        static vector<vector<uint8_t>> previous_render;
 };
